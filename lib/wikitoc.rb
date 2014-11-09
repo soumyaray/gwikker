@@ -1,12 +1,23 @@
 ## Helper for 'sidebar' rake task
-class GithubWikiTOC
-  def self.write_side_bar
+class WikiTOC
+
+  def self.write_toc(&output)
     name_a = get_file_names(all_markdown_files)
     res_h = build_resource_tree(name_a)
 
-    File.open('_Sidebar.md', 'w') do |file|
-      file.puts sidebar_warning
-      print_resources(res_h) { |line| file.puts line }
+    yield sidebar_warning
+    print_resources(res_h) { |line| yield line }
+  end
+
+  def self.puts_toc
+    File.open(filename, 'w') do |file|
+      write_toc { |line| puts line }
+    end
+  end
+
+  def self.write_toc_to_file(filename)
+    File.open(filename, 'w') do |file|
+      write_toc { |line| file.puts line }
     end
   end
 
