@@ -1,5 +1,6 @@
 
 desc 'Populate test files'
-task :test_create do
-  touch `cat _filename.txt`
+task :test_touch do
+  test_files = File.read('spec/testfiles/_filenames.txt').split("\n")
+  FileUtils.touch test_files
 end
